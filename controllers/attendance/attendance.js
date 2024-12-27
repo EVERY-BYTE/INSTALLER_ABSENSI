@@ -10,6 +10,8 @@ const response_1 = require("../../utilities/response");
 const logger_1 = __importDefault(require("../../utilities/logger"));
 const attendanceSchema_1 = require("../../schemas/attendanceSchema");
 const scheduleModel_1 = require("../../models/scheduleModel");
+const attendanceHistoryModel_1 = require("../../models/attendanceHistoryModel");
+const moment_1 = __importDefault(require("moment"));
 const attendance = async (req, res) => {
     const { error, value } = (0, validateRequest_1.validateRequest)(attendanceSchema_1.updateAttendanceSchema, {
         ...req.body
@@ -45,6 +47,12 @@ const attendance = async (req, res) => {
         await scheduleModel_1.ScheduleModel.update({ ...value, scheduleStatus: newStatus }, {
             where: { deleted: 0, scheduleId: value.attendanceId }
         });
+        const attendanceHistoryPayload = {
+            attendanceHistoryTime: (0, moment_1.default)().format('YYYY-MM-DD HH:mm:ss'),
+            attendanceHistoryCategory: newStatus,
+            attendanceHistoryUserId: scheduleRecord.scheduleUserId
+        };
+        await attendanceHistoryModel_1.AttendanceHistoryModel.create(attendanceHistoryPayload);
         const response = response_1.ResponseData.success({
             message: `Attendance updated to ${newStatus} successfully`
         });

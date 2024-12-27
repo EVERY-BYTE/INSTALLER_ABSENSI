@@ -15,6 +15,7 @@ const statisticRouter_1 = __importDefault(require("./statisticRouter"));
 const spgRouter_1 = __importDefault(require("./spgRouter"));
 const locationRouter_1 = __importDefault(require("./locationRouter"));
 const uploadFileRouter_1 = __importDefault(require("./uploadFileRouter"));
+const attendanceHistoryRouter_1 = __importDefault(require("./attendanceHistoryRouter"));
 const appRouterV1 = (app) => {
     app.get('/api/v1', async (req, res) => await (0, controllers_1.index)(req, res));
     app.use('/api/v1/users', userRouter_1.default);
@@ -23,6 +24,7 @@ const appRouterV1 = (app) => {
     app.use('/api/v1/my-profile', myProfileRouter_1.default);
     app.use('/api/v1/stores', storeRouter_1.default);
     app.use('/api/v1/attendances', attendanceRouter_1.default);
+    app.use('/api/v1/attendances/histories', attendanceHistoryRouter_1.default);
     app.use('/api/v1/statistic', statisticRouter_1.default);
     app.use('/api/v1/spg', spgRouter_1.default);
     app.use('/api/v1/locations', locationRouter_1.default);
